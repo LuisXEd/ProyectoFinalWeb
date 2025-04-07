@@ -1,0 +1,20 @@
+{% load static %}
+<title>Contacto | Sabores de Cine</title>
+{% include 'navBar.html' %}
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">📨 Contáctanos</h1>
+    <p class="text-center">¿Tienes preguntas o sugerencias? Envíanos un mensaje.</p>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Enviar Mensaje</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}

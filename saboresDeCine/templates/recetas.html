@@ -1,0 +1,24 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Recetas destacadas</h2>
+    <div class="row">
+        {% for receta in recetas %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="{{ receta.imagen.url }}" class="card-img-top" alt="{{ receta.titulo }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ receta.titulo }}</h5>
+                    <p class="card-text">{{ receta.descripcion|truncatechars:100 }}</p>
+                    <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-primary">Ver receta</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No hay recetas aún.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% include 'footer.html' %}

@@ -1,0 +1,121 @@
+{% load static %}
+
+<title>Sabores de Cine</title>
+
+{% include 'navBar.html' %}
+
+<body>
+    
+    <!-- Encabezado -->
+    <header class="header-custom text-center py-4">
+        <h1>Sabores de Cine</h1>
+        <p>La combinación perfecta entre películas, comida y decoración para una noche increíble.</p>
+    </header>
+
+    <!-- Carrusel -->
+
+    <div id="carouselExample" class="carousel slide container mt-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'images/pexels-cottonbro-4881681.jpg' %}" class="d-block w-100" alt="Noche de cine en casa">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/photo-1555949258-eb67b1ef0ceb.avif' %}" class="d-block w-100" alt="Comida temática de cine">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'images/table-setting-791149_1280.jpg' %}" class="d-block w-100" alt="Decoración para cine en casa">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- Sección de Categorías -->
+
+    <section class="container my-5 text-center">
+        <h2>Explora nuestras categorías</h2>
+        <div class="category-container mt-4">
+            <div class="category-card">
+                <a href="/peliculas" style="text-decoration: none; color: inherit;">
+                    <img src="{% static 'images/cine1.jpg' %}" alt="Cine en casa">
+                    <div class="card-body">
+                        <h3>Cine</h3>
+                        <p>Descubre las mejores películas para una noche especial.</p>
+                    </div>
+                </a>
+            </div>
+    
+            <div class="category-card">
+                <a href="/comida" style="text-decoration: none; color: inherit;">
+                    <img src="{% static 'images/comida.jpg' %}" alt="Comida temática">
+                    <div class="card-body">
+                        <h3>Comida</h3>
+                        <p>Recetas y snacks ideales para disfrutar con cada película.</p>
+                    </div>
+                </a>
+            </div>
+    
+            <div class="category-card">
+                <a href="/decoracion" style="text-decoration: none; color: inherit;">
+                    <img src="{% static 'images/decoracion.jpg' %}" alt="Decoración para cine">
+                    <div class="card-body">
+                        <h3>Decoración</h3>
+                        <p>Ambienta tu espacio para que cada película sea una experiencia única.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Películas dinámicas desde la base de datos -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Películas destacadas</h2>
+        <div class="row">
+            {% for pelicula in peliculas %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ pelicula.imagen.url }}" class="card-img-top" alt="{{ pelicula.titulo }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ pelicula.titulo }}</h5>
+                        <p class="card-text">{{ pelicula.descripcion|truncatechars:100 }}</p>
+                        <a href="{% url 'pelicula_detalle' pelicula.pk %}" class="btn btn-primary">Ver más</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center">No hay películas disponibles por el momento.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Recetas dinámicas desde la base de datos -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Recetas recomendadas</h2>
+        <div class="row">
+            {% for receta in recetas %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ receta.imagen.url }}" class="card-img-top" alt="{{ receta.nombre }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ receta.nombre }}</h5>
+                        <p class="card-text">{{ receta.descripcion|truncatechars:100 }}</p>
+                        <a href="{% url 'receta_detalle' receta.pk %}" class="btn btn-success">Ver receta</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center">No hay recetas disponibles en este momento.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+
+    {% include 'footer.html' %}
+
+</body>
+</html>

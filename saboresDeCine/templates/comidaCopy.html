@@ -1,0 +1,109 @@
+{% load static %}
+
+<title>Recetas | Sabores de Cine</title>
+
+{% include 'navBar.html' %}
+
+<body>
+    
+    <header class="header-custom text-center py-4">
+        <h1>🍽️ Recetas Inspiradas en el Cine 🎬</h1>
+        <p>Descubre deliciosas recetas inspiradas en tus películas favoritas.</p>
+    </header>
+
+    <!-- Sección de Recetas de Películas -->
+    <section class="container my-5">
+        <div class="row" id="recetas-container">
+        </div>
+    </section>
+
+    <!-- Sección de Otras Recomendaciones de Comida -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">🍽️ Otras Recomendaciones de Comida 🌍</h2>
+        <div class="row" id="recomendaciones-container">
+        </div>
+    </section>
+
+    <!-- Modal para Mostrar Receta -->
+    <div class="modal fade" id="modalReceta" tabindex="-1" aria-labelledby="modalRecetaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalRecetaLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="recetaImagen" src="" class="img-fluid mb-3" alt="" style="border-radius: 10px;">
+                    <p id="peliculaReferencia" class="text-warning fw-bold"></p> <!-- Se cambia el color del texto -->
+                    <h4 class="text-warning">🥣 Ingredientes</h4> <!-- Ahora es amarillo para más visibilidad -->
+                    <ul id="recetaIngredientes" class="list-unstyled"></ul>
+                    <h4 class="text-warning">👨‍🍳 Preparación</h4>
+                    <p id="recetaPreparacion" class="fw-light"></p> <!-- Se agrega estilo ligero para mejor lectura -->
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+</body>
+</html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        const recetasContainer = document.getElementById("recetas-container");
+        const recomendacionesContainer = document.getElementById("recomendaciones-container");
+    
+        // Obtener las recomendaciones desde el servidor (usando fetch)
+        const response = await fetch("/recomendaciones-json/");
+        const recomendaciones = await response.json();
+    
+        // Generar las tarjetas de recomendaciones
+        recomendaciones.forEach((recomendacion, index) => {
+            const card = document.createElement("div");
+            card.classList.add("col-md-3", "mb-4");
+            card.innerHTML = `
+                <div class="card h-100 text-center">
+                    <img src="${recomendacion.imagen}" class="card-img-top img-fluid" style="height: 500px; object-fit: cover; border-radius: 10px;" alt="${recomendacion.titulo}">
+                    <div class="card-body">
+                        <h5 class="card-title">${recomendacion.titulo}</h5>
+                        <p class="text-muted">📽️ Esta receta es de: <strong>${recomendacion.pelicula}</strong></p>
+                        <button class="btn btn-primary" onclick="mostrarReceta(${index}, 'recomendacion')">Ver Más</button>
+                    </div>
+                </div>
+            `;
+            recomendacionesContainer.appendChild(card);
+        });
+    });
+    
+    // Función para mostrar la receta en un modal
+    function mostrarReceta(index, tipo) {
+        let receta;
+        // Cargar la receta desde las recomendaciones
+        receta = recomendaciones[index];
+    
+        if (!receta) {
+            console.error("No se encontró la receta.");
+            return;
+        }
+    
+        document.getElementById("modalRecetaLabel").textContent = receta.titulo;
+        document.getElementById("recetaImagen").src = receta.imagen;
+        document.getElementById("recetaImagen").alt = receta.titulo;
+        document.getElementById("recetaPreparacion").textContent = receta.preparacion;
+    
+        const ingredientesLista = document.getElementById("recetaIngredientes");
+        ingredientesLista.innerHTML = "";
+        receta.ingredientes.forEach(ingrediente => {
+            const li = document.createElement("li");
+            li.textContent = ingrediente;
+            ingredientesLista.appendChild(li);
+        });
+    
+        const modal = new bootstrap.Modal(document.getElementById("modalReceta"));
+        modal.show();
+    }
+    </script>
+    
+</body>
+</html>

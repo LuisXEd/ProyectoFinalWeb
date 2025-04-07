@@ -1,0 +1,96 @@
+{% load static %}
+
+<title>Decoración | Sabores de Cine</title>
+
+{% include 'navBar.html' %}
+
+<body>
+
+    <header class="header-custom text-center py-4">
+        <h1>🎭 Crea el Ambiente Perfecto para tus Películas 🎬</h1>
+        <p>Transforma tu espacio con ideas creativas para disfrutar al máximo cada película.</p>
+    </header>
+
+    <!-- Sección de Ideas de Decoración -->
+
+<section id="decoracionContainer" class="container my-5">
+    <h2 class="text-center mb-4">💡 Ideas de Decoración</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" onclick="mostrarDecoracion('cine_casa')">
+                <img src="{% static 'images/cine_casa1.jpg' %}" class="card-img-top" alt="Cine en Casa">
+                <div class="card-body">
+                    <h5 class="card-title">🎥 Cine en Casa</h5>
+                    <p class="card-text">Crea un espacio acogedor con luces LED, proyector y asientos cómodos.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" onclick="mostrarDecoracion('noche_tematica')">
+                <img src="{% static 'images/noche_tematica.jpg' %}" class="card-img-top" alt="Noche Temática">
+                <div class="card-body">
+                    <h5 class="card-title">🌟 Noche Temática</h5>
+                    <p class="card-text">Ambientación basada en películas como Harry Potter, Marvel o Disney.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" onclick="mostrarDecoracion('cine_aire_libre')">
+                <img src="{% static 'images/cine_aire_libre.jpg' %}" class="card-img-top" alt="Cine al Aire Libre">
+                <div class="card-body">
+                    <h5 class="card-title">🌳 Cine al Aire Libre</h5>
+                    <p class="card-text">Coloca una pantalla en el jardín con mantas y luces cálidas.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Sección de Detalle de Decoración -->
+    <section id="detalleDecoracion" class="container my-5">
+        <button class="btn btn-secondary mb-4" onclick="volverALista()">🔙 Volver a la Lista</button>
+        <h2 id="detalleTitulo" class="text-center mb-4"></h2>
+        <img id="detalleImagen" class="img-fluid mx-auto d-block mb-3" src="" alt="" style="max-width: 800px;">
+        <p id="detalleDescripcion" class="text-center"></p>
+    </section>
+
+    {% include 'footer.html' %}
+
+    <script>
+        function mostrarDecoracion(tipo) {
+            let titulo = "";
+            let imagen = "";
+            let descripcion = "";
+    
+            if (tipo === "cine_casa") {
+                titulo = "🎥 Cine en Casa";
+                imagen = "{% static 'images/cine_casa.jpg' %}";
+                descripcion = "Crea un espacio acogedor con luces LED, un proyector de alta calidad y asientos cómodos para disfrutar de tus películas favoritas como si estuvieras en el cine.";
+            } else if (tipo === "noche_tematica") {
+                titulo = "🌟 Noche Temática";
+                imagen = "{% static 'images/noche_tematica.jpg' %}";
+                descripcion = "Organiza una noche temática inspirada en tus películas favoritas. Decora con elementos de Harry Potter, Marvel o Disney y crea una experiencia mágica.";
+            } else if (tipo === "cine_aire_libre") {
+                titulo = "🌳 Cine al Aire Libre";
+                imagen = "{% static 'images/cine_aire_libre.jpg' %}";
+                descripcion = "Convierte tu jardín en un cine al aire libre. Usa un proyector, coloca mantas y cojines cómodos, y decora con luces cálidas para una experiencia increíble.";
+            }
+    
+            // Ocultar la lista de decoraciones y mostrar el detalle
+            document.getElementById("decoracionContainer").style.display = "none";
+            document.getElementById("detalleDecoracion").style.display = "block";
+    
+            // Llenar la sección de detalles
+            document.getElementById("detalleTitulo").textContent = titulo;
+            document.getElementById("detalleImagen").src = imagen;
+            document.getElementById("detalleDescripcion").textContent = descripcion;
+        }
+    
+        function volverALista() {
+            document.getElementById("detalleDecoracion").style.display = "none";
+            document.getElementById("decoracionContainer").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>

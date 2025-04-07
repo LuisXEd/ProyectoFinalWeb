@@ -1,0 +1,356 @@
+{% load static %}
+
+<title>Recetas | Sabores de Cine</title>
+
+{% include 'navBar.html' %}
+
+<body>
+
+    <header class="header-custom text-center py-4">
+        <h1>🍽️ Recetas Inspiradas en el Cine 🎬</h1>
+        <p>Descubre deliciosas recetas inspiradas en tus películas favoritas.</p>
+    </header>
+
+    <!-- Sección de Recetas de Películas -->
+    <section class="container my-5">
+        <div class="row" id="recetas-container">
+        </div>
+    </section>
+
+    <!-- Sección de Otras Recomendaciones de Comida -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">🍽️ Otras Recomendaciones de Comida 🌍</h2>
+        <div class="row" id="recomendaciones-container">
+        </div>
+    </section>
+
+    <!-- Modal para Mostrar Receta -->
+    <div class="modal fade" id="modalReceta" tabindex="-1" aria-labelledby="modalRecetaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalRecetaLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="recetaImagen" src="" class="img-fluid mb-3" alt="" style="border-radius: 10px;">
+                    <p id="peliculaReferencia" class="text-warning fw-bold"></p> <!-- Se cambia el color del texto -->
+                    <h4 class="text-warning">🥣 Ingredientes</h4> <!-- Ahora es amarillo para más visibilidad -->
+                    <ul id="recetaIngredientes" class="list-unstyled"></ul>
+                    <h4 class="text-warning">👨‍🍳 Preparación</h4>
+                    <p id="recetaPreparacion" class="fw-light"></p> <!-- Se agrega estilo ligero para mejor lectura -->
+                </div>                
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+</body>
+</html>
+
+    <script>
+        const recetas = [
+            { 
+                titulo: "Pozole Rojo", 
+                pelicula: "Coco", 
+                imagen: "{% static 'images/pozole.jpg' %}", 
+                ingredientes: ["Carne de cerdo", "Maíz pozolero", "Chiles guajillo", "Cebolla", "Orégano"], 
+                preparacion: "Hierve la carne, agrega los chiles licuados y cocina por 30 minutos."
+            },
+            { 
+                titulo: "Ratatouille", 
+                pelicula: "Ratatouille", 
+                imagen: "{% static 'images/ratatouille.jpg.avif' %}",
+                ingredientes: ["1 berenjena", "1 calabacín", "1 pimiento rojo", "1 pimiento verde", "1 tomate", "Aceite de oliva", "Sal y pimienta"], 
+                preparacion: "Corta las verduras en rodajas finas y colócalas en una bandeja para hornear. Agrega aceite de oliva, sal y pimienta. Hornea a 180°C por 40 minutos."
+            },
+            { 
+                titulo: "Tacos al Pastor", 
+                pelicula: "Spider-Man: Un Nuevo Universo", 
+                imagen: "{% static 'images/tacos.jpg' %}", 
+                ingredientes: ["500 g de carne de cerdo", "2 chiles guajillo", "1 piña", "Cilantro", "Tortillas de maíz", "Sal y pimienta"], 
+                preparacion: "Marina la carne con los chiles y especias. Ásala en una sartén y sirve en tortillas con piña y cilantro."
+            },
+            { 
+                titulo: "Galletas de Mantequilla", 
+                pelicula: "Shrek", 
+                imagen: "{% static 'images/galletas.jpg' %}", 
+                ingredientes: ["2 tazas de harina", "1 taza de mantequilla", "½ taza de azúcar", "1 cucharadita de vainilla"], 
+                preparacion: "Mezcla los ingredientes, forma galletas y hornea a 180°C por 12 minutos."
+            },
+            { 
+                titulo: "Hamburguesa Krabby Patty", 
+                pelicula: "Bob Esponja", 
+                imagen: "{% static 'images/krabbypatty.jpg' %}", 
+                ingredientes: ["Pan de hamburguesa", "Carne de res", "Queso cheddar", "Lechuga", "Pepinillos", "Mayonesa", "Mostaza"], 
+                preparacion: "Cocina la carne, arma la hamburguesa y disfruta con salsas."
+            },
+            { 
+                titulo: "Dulce de Nieve", 
+                pelicula: "Frozen", 
+                imagen: "{% static 'images/dulce_nieve.jpg' %}", 
+                ingredientes: ["1 taza de crema batida", "½ taza de leche condensada", "1 cucharadita de esencia de vainilla"], 
+                preparacion: "Mezcla los ingredientes y congela por 2 horas antes de servir."
+            },
+            { 
+                titulo: "Sándwich Cubano", 
+                pelicula: "Plato estrella de 'Chef: La Receta de la Felicidad.", 
+                imagen: "{% static 'images/sandwich_cubano.jpg' %}", 
+                ingredientes: ["2 panes cubanos", "100g de cerdo asado", "2 lonchas de jamón", "2 lonchas de queso suizo", "2 rodajas de pepinillo", "Mostaza y mantequilla"], 
+                preparacion: "Unta mostaza en el pan, coloca el cerdo, jamón, queso y pepinillos. Dora en una sartén hasta que el queso se derrita."
+            },
+            { 
+                titulo: "Pollo Frito de Bubba Gump", 
+                pelicula: "📽️ Inspirado en Forrest Gump", 
+                imagen: "{% static 'images/pollo.jpg' %}", 
+                ingredientes: ["2 piezas de pollo", "½ taza de harina", "1 huevo", "½ taza de pan rallado", "Sal y pimienta al gusto","Aceite para freír"], 
+                preparacion: "Sazona el pollo con sal y pimienta. Pásalo por harina, huevo batido y pan rallado. Fríe en aceite caliente hasta que esté dorado y crujiente."
+            },
+            { 
+                titulo: "Croissant", 
+                pelicula: "El Diablo Viste a la Moda", 
+                imagen: "{% static 'images/croissant.jpg' %}", 
+                ingredientes: ["Harina", "Mantequilla", "Levadura", "Azúcar"], 
+                preparacion: "Forma la masa, dobla con mantequilla y hornea a 200°C."
+            },
+            { 
+                titulo: "Sopa de Cebolla", 
+                pelicula: "Ratatouille", 
+                imagen: "{% static 'images/sopa_cebolla.jpg' %}", 
+                ingredientes: ["Cebolla", "Caldo de res", "Queso gruyère", "Pan tostado"], 
+                preparacion: "Cocina la cebolla en caldo, cubre con queso y gratina."
+            },
+            { 
+                titulo: "Baba Ganoush", 
+                pelicula: "Aladdín", 
+                imagen: "{% static 'images/baba_ganoush.jpg' %}", 
+                ingredientes: ["Berenjena", "Ajo", "Aceite de oliva", "Tahini", "Limón"], 
+                preparacion: "Asa la berenjena, tritúrala con los ingredientes y sirve con pan pita."
+            },
+            { 
+                titulo: "Tiramisú", 
+                pelicula: "El Padrino", 
+                imagen: "{% static 'images/tiramisu.jpg' %}", 
+                ingredientes: ["Café", "Queso mascarpone", "Cacao", "Bizcochos"], 
+                preparacion: "Alterna capas de bizcocho con café y crema, refrigera."
+            },
+        ];
+
+        const recomendaciones = [
+        { 
+            titulo: "Sushi", 
+            imagen: "{% static 'images/sushi.jpg' %}", 
+            descripcion: "Un clásico de la comida japonesa.", 
+            ingredientes: ["Arroz de sushi", "Pescado", "Alga nori", "Vinagre de arroz"],
+            preparacion: "Enrolla el arroz y pescado en el alga y corta en piezas."
+        },
+        { 
+            titulo: "Pizza Margarita", 
+            imagen: "{% static 'images/pizza.jpg' %}", 
+            descripcion: "Base de tomate, mozzarella y albahaca.", 
+            ingredientes: ["Masa de pizza", "Salsa de tomate", "Mozzarella", "Albahaca"],
+            preparacion: "Agrega los ingredientes y hornea 15 min a 200°C."
+        },
+        { 
+            titulo: "Ribs BBQ Estilo Americano", 
+            imagen: "{% static 'images/bbg.jpg' %}", 
+            descripcion: "Costillas tiernas y caramelizadas con una salsa BBQ casera que se deshacen en la boca.", 
+            ingredientes: [ "Costillas de cerdo", "Salsa BBQ casera", "Azúcar morena","Ajo en polvo","Mostaza"],
+            preparacion: "Marina las costillas, hornéalas lentamente y barniza con salsa BBQ hasta que estén glaseadas."
+        },
+        { 
+            titulo: "Burritos de Pollo", 
+            imagen: "{% static 'images/pollito.jpg' %}", 
+            descripcion: "Un platillo mexicano rápido y delicioso.", 
+            ingredientes: ["Tortillas", "Pollo desmenuzado", "Frijoles refritos", "Queso rallado","Salsa"],
+            preparacion: "Rellena las tortillas y calienta en sartén."
+        },
+        { 
+            titulo: "Ensalada César", 
+            imagen: "{% static 'images/ensalada.jpg' %}", 
+            descripcion: "Una ensalada fresca con pollo y aderezo cremoso.", 
+            ingredientes: ["Lechuga romana", "Pollo a la parrilla", "Queso parmesano", "Crutones","Aderezo César"],
+            preparacion: "Mezcla todos los ingredientes y sirve con aderezo."
+        },
+        { 
+            titulo: "Sopa de Lentejas", 
+            imagen: "{% static 'images/lentejas.jpg' %}", 
+            descripcion: "Un plato reconfortante y nutritivo, perfecto para días fríos.", 
+            ingredientes: ["Lentejas", "Zanahoria", "Cebolla", "Ajo","Caldo de verduras"],
+            preparacion: "Cocina todo junto hasta que las lentejas estén suaves."
+        },
+        { 
+            titulo: "Pasta Alfredo", 
+            imagen: "{% static 'images/alfredo.jpg' %}", 
+            descripcion: "Una pasta cremosa con salsa de queso parmesano.", 
+            ingredientes: ["Pasta fettuccine", "Crema de leche", "Queso parmesano", "Ajo","Mantequilla","Pechuga de pollo"],
+            preparacion: "Cocina la pasta y mezcla con la salsa Alfred."
+        },
+        { 
+            titulo: "Tacos de Birria con Consomé", 
+            imagen: "{% static 'images/birria.jpg' %}", 
+            descripcion: "Tacos dorados y jugosos bañados en un consomé especiado que explota en sabor.", 
+            ingredientes: [ "Carne de res deshebrada", "Chiles secos", "Tortillas de maíz","Queso Oaxaca"],
+            preparacion: "Cocina la carne en un caldo de especias, rellena las tortillas con queso, fríelas y acompaña con el consomé."
+        },
+        { 
+            titulo: "Arroz Frito con Vegetales", 
+            imagen: "{% static 'images/arrozfrito.jpg' %}", 
+            descripcion: "Un plato asiático fácil y lleno de sabor.", 
+            ingredientes: ["Arroz cocido", "Zanahoria", "Guisantes", "Huevo","Salsa de soja"],
+            preparacion: "Saltea todo junto en un sartén con un poco de aceite."
+        },
+        { 
+            titulo: "Chiles Rellenos", 
+            imagen: "{% static 'images/chiles.jpg' %}", 
+            descripcion: "Chiles rellenos de queso con una salsa deliciosa.", 
+            ingredientes: ["Chiles poblanos", "Queso", "Huevo", "Salsa de tomate"],
+            preparacion: "Rellena los chiles con queso, pásalos por huevo batido y fríe."
+        },
+        { 
+            titulo: "Crema de Calabaza", 
+            imagen: "{% static 'images/calabaza.jpg' %}", 
+            descripcion: "Una crema suave y nutritiva, perfecta para el otoño.", 
+            ingredientes: ["Calabaza", "Cebolla", "Caldo de pollo", "Crema de leche"],
+            preparacion: "Cocina la calabaza y licúa con los demás ingredientes."
+        },
+        { 
+            titulo: "Tortilla Española", 
+            imagen: "{% static 'images/española.jpg' %}", 
+            descripcion: "Un clásico español a base de papas y huevo.", 
+            ingredientes: ["Papas", "Huevos", "Cebolla", "Aceite de oliva"],
+            preparacion: "Fríe las papas con cebolla, agrega los huevos y cocina hasta cuajar."
+        },
+        { 
+            titulo: "Guiso de Res con Papas", 
+            imagen: "{% static 'images/res.jpg' %}", 
+            descripcion: "Un guiso casero lleno de sabor y tradición.",
+            ingredientes: ["Papas", "Carne de res", "Zanahoria", "Cebolla","Caldo de res"],
+            preparacion: "Cocina todo junto a fuego lento hasta que la carne esté tierna."
+        },
+        { 
+            titulo: "Pollo a la Naranja", 
+            imagen: "{% static 'images/naranja.jpg' %}", 
+            descripcion: "Una receta asiática agridulce y deliciosa.", 
+            ingredientes: ["Pechuga de pollo", "Jugo de naranja", "Salsa de soja", "Miel"],
+            preparacion: "Cocina el pollo y báñalo con la mezcla de naranja y miel."
+        },
+        { 
+            titulo: "Rollos de Canela", 
+            imagen: "{% static 'images/rollos.jpg' %}", 
+            descripcion: "Un postre dulce y esponjoso con aroma a canela.", 
+            ingredientes: ["Harina", "Azúcar", "Canela", "Mantequilla","Levadura"],
+            preparacion: "Forma la masa, enrolla con canela y azúcar, y hornea."
+        },
+        { 
+            titulo: "Papas al Horno con Queso", 
+            imagen: "{% static 'images/papas.jpg' %}", 
+            descripcion: "Papas gratinadas con queso y tocino.", 
+            ingredientes: ["Papas", "Queso rallado", "Crema agria", "Tocino"],
+            preparacion: "Hornea las papas, añade queso y tocino, y gratina."
+        },
+        { 
+            titulo: "Volcán de Chocolate con Helado", 
+            imagen: "{% static 'images/helado.jpg' %}", 
+            descripcion: "Un postre con centro líquido de chocolate que se mezcla con el frío del helado", 
+            ingredientes: ["Chocolate amargo", "Harina", "Azúcar", "Mantequilla"],
+            preparacion: " Hornea los moldes de volcán hasta que el centro esté derretido y sirve con helado de vainilla."
+        },
+        { 
+            titulo: "Pollo al Limón", 
+            imagen: "{% static 'images/limon.jpg' %}", 
+            descripcion: "Un platillo jugoso con un toque cítrico.", 
+            ingredientes: ["Pechuga de pollo", "Jugo de limón", "Ajo", "Mantequilla"],
+            preparacion: "Dora el pollo y añade el jugo de limón con ajo y mantequilla."
+        },
+        { 
+            titulo: "Tomahawk Steak a la Parrilla", 
+            imagen: "{% static 'images/steak.jpg' %}", 
+            descripcion: "Un corte de carne grueso, jugoso y lleno de sabor, con una costra dorada perfecta.", 
+            ingredientes: ["1 Tomahawk steak", "Sal gruesa", "Pimienta negra", "Mantequilla","Ajo"],
+            preparacion: "Sella el steak en la parrilla, agrega mantequilla con ajo y termina en el horno hasta el punto deseado."
+        },
+        { 
+            titulo: "Langosta a la Mantequilla de Ajo", 
+            imagen: "{% static 'images/ajo.jpg' %}", 
+            descripcion: "Mariscos en su máxima expresión, jugosos y bañados en una salsa de mantequilla y ajo.", 
+            ingredientes: [ "2 colas de langosta", "Jugo de limón", "Mantequilla","Ajo picado"],
+            preparacion: "Cocina las langostas al horno con la mantequilla de ajo y sirve con rodajas de limón."
+        }
+    ];
+
+        document.addEventListener("DOMContentLoaded", function () {
+    const recetasContainer = document.getElementById("recetas-container");
+    const recomendacionesContainer = document.getElementById("recomendaciones-container");
+
+    // Generar Recetas de Películas
+    recetas.forEach((receta, index) => {
+        const card = document.createElement("div");
+        card.classList.add("col-md-3", "mb-4");
+        card.innerHTML = `
+            <div class="card h-100 text-center">
+                <img src="${receta.imagen}" class="card-img-top img-fluid" style="height: 500px; object-fit: cover; border-radius: 10px;" alt="${receta.titulo}">
+                <div class="card-body">
+                    <h5 class="card-title">${receta.titulo}</h5>
+                    <p class="text-muted">📽️ Esta receta es de: <strong>${receta.pelicula}</strong></p>
+                    <button class="btn btn-primary" onclick="mostrarReceta(${index}, 'receta')">Ver Receta</button>
+                </div>
+            </div>
+        `;
+        recetasContainer.appendChild(card);
+    });
+
+    // Generar Otras Recomendaciones de Comida
+    recomendaciones.forEach((recomendacion, index) => {
+        const card = document.createElement("div");
+        card.classList.add("col-md-3", "mb-4");
+        card.innerHTML = `
+            <div class="card h-100 text-center">
+                <img src="${recomendacion.imagen}" class="card-img-top img-fluid" style="height: 500px; object-fit: cover; border-radius: 10px;" alt="${recomendacion.titulo}">
+                <div class="card-body">
+                    <h5 class="card-title">${recomendacion.titulo}</h5>
+                    <p class="text-muted">${recomendacion.descripcion}</p>
+                    <button class="btn btn-primary" onclick="mostrarReceta(${index}, 'recomendacion')">Ver Más</button>
+                </div>
+            </div>
+        `;
+        recomendacionesContainer.appendChild(card);
+    });
+});
+
+
+// FUNCIÓN PARA MOSTRAR EL MODAL
+function mostrarReceta(index, tipo) {
+    let receta;
+
+    if (tipo === "receta") {
+        receta = recetas[index];
+    } else {
+        receta = recomendaciones[index];
+    }
+
+    if (!receta) {
+        console.error("No se encontró la receta.");
+        return;
+    }
+
+    document.getElementById("modalRecetaLabel").textContent = receta.titulo;
+    document.getElementById("recetaImagen").src = receta.imagen;
+    document.getElementById("recetaImagen").alt = receta.titulo;
+    document.getElementById("recetaPreparacion").textContent = receta.preparacion;
+
+    const ingredientesLista = document.getElementById("recetaIngredientes");
+    ingredientesLista.innerHTML = "";
+    receta.ingredientes.forEach(ingrediente => {
+        const li = document.createElement("li");
+        li.textContent = ingrediente;
+        ingredientesLista.appendChild(li);
+    });
+
+    const modal = new bootstrap.Modal(document.getElementById("modalReceta"));
+    modal.show();
+}
+</script>
+</body>
+</html>

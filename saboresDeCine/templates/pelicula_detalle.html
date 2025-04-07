@@ -1,0 +1,21 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<div class="container mt-5">
+    <h1 class="text-center">{{ pelicula.titulo }}</h1>
+
+    <div class="text-center my-4">
+        <img src="{{ pelicula.imagen.url }}" class="img-fluid rounded" alt="{{ pelicula.titulo }}" style="max-height: 400px;">
+    </div>
+
+    <div class="mt-4">
+        <h5>Descripción:</h5>
+        <p>{{ pelicula.descripcion }}</p>
+    </div>
+
+    <div class="text-center mt-4">
+          <a href="{% url 'inicio' %}" class="btn btn-outline-secondary">← Volver al inicio</a>
+    </div>
+</div>
+
+{% include 'footer.html' %}

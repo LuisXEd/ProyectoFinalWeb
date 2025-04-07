@@ -1,0 +1,102 @@
+{% load static %}
+
+<title>Cartelera de películas | Sabores de Cine</title>
+
+{% include 'navBar.html' %}
+
+<body>
+
+    <header class="header-custom text-center py-4">
+        <h1>🍿Películas Perfectas para Acompañar tu Comida🎬</h1>
+        <p>Explora una amplia selección de películas de todos los géneros.</p>
+    </header>
+
+    <section class="container my-5">
+        <div id="cartelera" class="row"></div>
+    </section>
+
+    <!-- Modal para mostrar detalles de la película -->
+    <div class="modal fade" id="detallePeliculaModal" tabindex="-1" aria-labelledby="detallePeliculaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detallePeliculaLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="detallePeliculaImagen" src="" class="img-fluid mb-3" alt="">
+                    <p id="detallePeliculaDescripcion"></p>
+                    <a id="detallePeliculaTrailer" href="#" target="_blank" class="btn btn-primary">Ver Tráiler</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cartelera = document.getElementById("cartelera");
+            const peliculas = [
+        { titulo: "Duro de Cuidar", imagen: "{% static 'images/toystory.jpg' %}", descripcion: "Un guardaespaldas de élite debe proteger a un asesino a sueldo mientras evaden enemigos mortales.", trailer: "https://www.youtube.com/watch?v=DKBUVnf5sNo" },
+        { titulo: "El sastre de la mafia", imagen: "{% static 'images/jurassicpark.jpg' %}", descripcion: "Un sastre experto en Chicago debe burlar a un peligroso grupo de mafiosos para sobrevivir.", trailer: "https://www.youtube.com/watch?v=GbJBgFm64xI" },
+        { titulo: "El negocio del dolor", imagen: "{% static 'images/negociodolor.jpg' %}", descripcion: "Una historia intensa sobre el auge y la corrupción en la industria farmacéutica.", trailer: "https://www.youtube.com/watch?v=T-5-srWmjiw" },
+        { titulo: "De Vuelta a la Acción", imagen: "{% static 'images/vueltaacción.jpg' %}", descripcion: "Una comedia de acción donde dos ex-agentes deben volver al ruedo en una peligrosa misión.", trailer: "https://www.youtube.com/watch?v=2_CLtBIWdkM" },
+        { titulo: "Inception", imagen: "{% static 'images/inception.jpg' %}", descripcion: "Un thriller de ciencia ficción dentro de los sueños.", trailer: "https://www.youtube.com/watch?v=YoHD9XEInc0" },
+        { titulo: "The Dark Knight", imagen: "{% static 'images/darkknight.jpg' %}", descripcion: "El mejor enfrentamiento entre Batman y el Joker.", trailer: "https://www.youtube.com/watch?v=EXeTwQWrcwY" },
+        { titulo: "Forrest Gump", imagen: "{% static 'images/forrestgump.jpg' %}", descripcion: "Una historia de vida y superación.", trailer: "https://www.youtube.com/watch?v=bLvqoHBptjg" },
+        { titulo: "Black Panther: Wakanda Forever", imagen: "{% static 'images/matrix.jpg' %}", descripcion: "Líderes de Wakanda que luchan por proteger su nación mientras enfrentan la pérdida del Rey T'Challa.", trailer: "https://www.youtube.com/watch?v=_Z3QKkl1WyM" },
+        { titulo: "Mufasa: El rey león", imagen: "{% static 'images/mufasa.jpg' %}", descripcion: "La historia jamás contada del padre de Simba.", trailer: "https://www.youtube.com/watch?v=glX5xo-E7WQ" },
+        { titulo: "Amenaza en el aire", imagen: "{% static 'images/amenaza.jpg' %}", descripcion: "Un thriller de acción en las alturas.", trailer: "https://www.youtube.com/watch?v=32RbSNw3NBQ" },
+        { titulo: "Memorias de un caracol", imagen: "{% static 'images/memorias.jpg' %}", descripcion: "Una historia de descubrimiento y nostalgia.", trailer: "https://www.youtube.com/watch?v=TpDWVaBlpJE" },
+        { titulo: "Cónclave", imagen: "{% static 'images/conclave.jpg' %}", descripcion: "Intrigas políticas en la elección de un nuevo Papa.", trailer: "https://www.youtube.com/watch?v=J0E78tL6CxY" },
+        { titulo: "Culpa Tuya", imagen: "{% static 'images/culpatuya.jpg' %}", descripcion: "Un drama intenso con giros inesperados.", trailer: "https://www.youtube.com/watch?v=f97f1jEqdgE" },
+        { titulo: "Absolution", imagen: "{% static 'images/absolution.jpg' %}", descripcion: "Un thriller de justicia y redención.", trailer: "https://www.youtube.com/watch?v=ReZetOuczXo" },
+        { titulo: "Inside Out 2", imagen: "{% static 'images/insideout2.jpg' %}", descripcion: "Las emociones continúan en la adolescencia de Riley.", trailer: "https://www.youtube.com/watch?v=LEjhY15eCx0" },
+        { titulo: "Avengers: Endgame", imagen: "{% static 'images/avengers.jpg' %}", descripcion: "El épico final de la saga del infinito.", trailer: "https://www.youtube.com/watch?v=TcMBFSGVi1c" },
+        { titulo: "Titanic", imagen: "{% static 'images/titanic.jpg' %}", descripcion: "Un romance trágico en el océano.", trailer: "https://www.youtube.com/watch?v=FiRVcExwBVA" },
+        { titulo: "El Señor de los Anillos", imagen: "{% static 'images/lotr.jpg' %}", descripcion: "Una aventura épica en la Tierra Media.", trailer: "https://www.youtube.com/watch?v=3GJp6p_mgPo" },
+        { titulo: "Harry Potter y la Piedra Filosofal", imagen: "{% static 'images/harrypotter.jpg' %}", descripcion: "El inicio de la magia en Hogwarts.", trailer: "https://www.youtube.com/watch?v=WE4AJuIvG1Y" },
+        { titulo: "John Wick", imagen: "{% static 'images/johnwick.jpg' %}", descripcion: "Acción y venganza en su máxima expresión.", trailer: "https://www.youtube.com/watch?v=L0anWmmd8TI" },
+        { titulo: "Matrix", imagen: "{% static 'images/matrix.jpg' %}", descripcion: "La realidad no es lo que parece.", trailer: "https://www.youtube.com/watch?v=vKQi3bBA1y8" },
+        { titulo: "Interestelar", imagen: "{% static 'images/interstellar.jpg' %}", descripcion: "Un viaje a través del espacio y el tiempo.", trailer: "https://www.youtube.com/watch?v=LYS2O1nl9iM" },
+        { titulo: "Deadpool", imagen: "{% static 'images/deadpool.jpg' %}", descripcion: "El antihéroe más irreverente del cine.", trailer: "https://www.youtube.com/watch?v=0JnRdfiUMa8" },
+        { titulo: "Spider-Man: No Way Home", imagen: "{% static 'images/spiderman.jpg' %}", descripcion: "El multiverso de Spider-Man cobra vida.", trailer: "https://www.youtube.com/watch?v=JfVOs4VSpmA" },
+        { titulo: "El Rey León", imagen: "{% static 'images/reyleon.jpg' %}", descripcion: "Una historia inolvidable de Disney.", trailer: "https://www.youtube.com/watch?v=mb79ctR-E-c" },
+        { titulo: "Shrek", imagen: "{% static 'images/shrek.jpg' %}", descripcion: "La comedia animada que cambió los cuentos de hadas.", trailer: "https://www.youtube.com/watch?v=7Bzbckc1IUI" },
+        { titulo: "Coco", imagen: "{% static 'images/coco.jpg' %}", descripcion: "Una celebración de la cultura mexicana y la familia.", trailer: "https://www.youtube.com/watch?v=awzWdtCezDo" },
+        { titulo: "Barbie", imagen: "{% static 'images/barbie.jpg' %}", descripcion: "Una comedia subversiva que explora temas de identidad y perfección.", trailer: "" },
+        { titulo: "RRR", imagen: "{% static 'images/rrr.jpg' %}", descripcion: "Una épica película india repleta de acción, música y amistad.", trailer: "https://www.youtube.com/watch?v=gH2mRECr6y4" },
+        { titulo: "Nope", imagen: "{% static 'images/nope.jpg' %}", descripcion: "Uno de los clásicos del cine de terror.", trailer: "https://www.youtube.com/watch?v=v0kTARdZah8" },
+        { titulo: "El menú", imagen: "{% static 'images/menu.jpg' %}", descripcion: "Sátira oscura ambientada en un exclusivo restaurante con giros inesperados.", trailer: "https://www.youtube.com/watch?v=e0n8hdMh3-k" },
+        { titulo: "Paddington en Perú", imagen: "{% static 'images/paddington.jpg' %}", descripcion: "La nueva aventura del oso más querido.", trailer: "https://www.youtube.com/watch?v=zAyMWSqcOhw" },
+        { titulo: "Vaiana 2", imagen: "{% static 'images/vaiana2.jpg' %}", descripcion: "Moana regresa a nuevas travesías.", trailer: "https://www.youtube.com/watch?v=O5lPAcMEKvE" }
+    ];
+
+            peliculas.forEach(pelicula => {
+                const peliculaHTML = `
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            <img src="${pelicula.imagen}" class="card-img-top" alt="${pelicula.titulo}">
+                            <div class="card-body">
+                                <h5 class="card-title">${pelicula.titulo}</h5>
+                                <p class="card-text">${pelicula.descripcion}</p>
+                                <button class="btn btn-primary ver-detalle" data-titulo="${pelicula.titulo}" data-imagen="${pelicula.imagen}" data-descripcion="${pelicula.descripcion}" data-trailer="${pelicula.trailer}" data-bs-toggle="modal" data-bs-target="#detallePeliculaModal">Ver Detalles</button>
+                            </div>
+                        </div>
+                    </div>`;
+                cartelera.innerHTML += peliculaHTML;
+            });
+
+            document.querySelectorAll(".ver-detalle").forEach(boton => {
+                boton.addEventListener("click", function () {
+                    document.getElementById("detallePeliculaLabel").textContent = this.dataset.titulo;
+                    document.getElementById("detallePeliculaImagen").src = this.dataset.imagen;
+                    document.getElementById("detallePeliculaDescripcion").textContent = this.dataset.descripcion;
+                    document.getElementById("detallePeliculaTrailer").href = this.dataset.trailer;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

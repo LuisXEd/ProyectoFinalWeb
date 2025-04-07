@@ -1,0 +1,70 @@
+{% load static %}
+
+<title>Enlaces de Interés | Sabores de Cine</title>
+
+{% include 'navBar.html' %}
+
+<body>
+    
+    <!-- Encabezado -->
+    <header class="header-custom text-center py-4">
+        <h1>🔗 Enlaces de Interés 🎥</h1>
+        <p>Explora videos y ubicaciones relacionadas con el mundo del cine y la gastronomía.</p>
+    </header>
+
+    <!-- Contenido -->
+    <section class="container my-5">
+        <div class="row">
+
+            <!-- Sección 1: Ideas para Cine en Casa -->
+            <div class="col-md-6">
+                <h3 class="text-center">🏠 Cómo Crear un Cine en Casa</h3>
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/EibyPEkD3LQ" title="Ideas para cine en casa" allowfullscreen></iframe>
+                </div>
+                <p class="text-center mt-2">Consejos para ambientar tu espacio con luces, sonido y decoración.</p>
+            </div>
+
+            <!-- Sección 2: Recetas para una Noche de Películas -->
+            <div class="col-md-6">
+                <h3 class="text-center">🍿 Snacks para Noche de Películas</h3>
+                <div class="ratio ratio-16x9">
+                    <iframe src="https://www.youtube.com/embed/71F-fd-vlig" title="Recetas para cine en casa" allowfullscreen></iframe>
+                </div>
+                <p class="text-center mt-2">Prepara los mejores snacks y comidas inspiradas en películas.</p>
+            </div>
+        </div>
+
+        <!-- Sección 3: Google Maps - Ubicación de Cines en República Dominicana -->
+        <div class="row mt-5">
+            <div class="col-md-12 text-center">
+                <h3>📍 Encuentra un Cine en República Dominicana</h3>
+                <div class="ratio ratio-16x9">
+                    <iframe 
+                        src="https://maps.google.com/maps?q=Caribbean%20Cinemas&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p>Encuentra los mejores cines en República Dominicana y disfruta de una experiencia única.</p>
+            </div>
+        </div>
+
+        <!-- Botones Google Earth -->
+        <div class="text-center mt-4">
+            <h3>🌍 Explora en Google Earth</h3>
+            <p>Descubre lugares de ventas de snacks y otros sitios de interés en República Dominicana.</p>
+            <a href="https://earth.google.com/web/search/tiendas+de+snacks+en+Rep%C3%BAblica+Dominicana" 
+                target="_blank" class="btn btn-primary btn-lg m-2">
+                🍪 Ver Tiendas de Snacks
+            </a>
+            <a href="https://earth.google.com/earth/d/130CNxXHR5A3SseNrfDXU4SurH-CCi5z9?usp=sharing" 
+                target="_blank" class="btn btn-success btn-lg m-2">
+                🎬 Explorar Lugares de Interés
+            </a>
+        </div>
+    </section>
+
+    {% include 'footer.html' %}
+    
+</body>
+</html>

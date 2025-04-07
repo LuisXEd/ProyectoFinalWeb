@@ -1,0 +1,10 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<div class="container text-center my-5">
+    <h2>¡Gracias {{ nombre }}!</h2>
+    <p>Tu mensaje ha sido enviado correctamente.</p>
+    <a href="{% url 'inicio' %}" class="btn btn-outline-primary mt-3">← Volver al inicio</a>
+</div>
+
+{% include 'footer.html' %}
