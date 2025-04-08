@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Pelicula, Receta, Noticia
+from .models import Pelicula, Receta, Noticia, PoliticaPrivacidad
 
 @admin.register(Pelicula)
 class PeliculaAdmin(admin.ModelAdmin):
@@ -16,3 +16,13 @@ class RecetaAdmin(admin.ModelAdmin):
 class NoticiaAdmin(admin.ModelAdmin):
     list_display = ('titulo',)
     search_fields = ('titulo',)
+
+@admin.register(PoliticaPrivacidad)
+class PoliticaPrivacidadAdmin(admin.ModelAdmin):
+    list_display = ('titulo',)
+
+    def has_add_permission(self, request):
+        # Evita que se creen más de una política
+        if PoliticaPrivacidad.objects.exists():
+            return False
+        return super().has_add_permission(request)

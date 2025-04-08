@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
-from .models import Pelicula, Receta, Noticia
+from .models import Pelicula, Receta, Noticia, PoliticaPrivacidad
 from django.core.mail import send_mail
 from .forms import MensajeContactoForm
 from django.conf import settings
@@ -60,8 +60,8 @@ def peliculas(request):
     return HttpResponse(template.render())
 
 def privacidad(request):
-    template = loader.get_template('privacidad.html')
-    return HttpResponse(template.render())
+    politica = PoliticaPrivacidad.objects.first()
+    return render(request, 'privacidad.html', {'politica': politica})
 
 def pelicula_detalle(request, pk):
     pelicula = get_object_or_404(Pelicula, pk=pk)
@@ -74,3 +74,6 @@ def recetas_list(request):
 def receta_detalle(request, pk):
     receta = get_object_or_404(Receta, pk=pk)
     return render(request, 'receta_detalle.html', {'receta': receta})
+
+def modo_prueba(request):
+    return render(request, 'modo_prueba.html')

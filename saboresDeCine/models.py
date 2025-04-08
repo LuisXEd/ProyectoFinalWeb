@@ -39,3 +39,9 @@ class MensajeContacto(models.Model):
     def __str__(self):
         return f"{self.nombre} - {self.email}"
 
+class PoliticaPrivacidad(models.Model):
+    titulo = models.CharField(max_length=200, default="Política de Privacidad")
+    contenido = models.TextField()
+
+    def __str__(self):
+        return self.titulo
