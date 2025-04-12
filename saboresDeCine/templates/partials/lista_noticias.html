@@ -1,0 +1,45 @@
+<div class="row">
+          {% for noticia in noticias %}
+            <div class="col-md-6 col-lg-4 mb-4 d-flex align-items-stretch">
+              <div class="card shadow-sm w-100 border border-primary rounded-4">
+                {% if noticia.imagen %}
+                  <img src="{{ noticia.imagen.url }}" class="card-img-top" alt="Imagen de {{ noticia.titulo }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body d-flex flex-column justify-content-between">
+                  <div>
+                    <h5 class="card-title">{{ noticia.titulo }}</h5>
+                    <p class="small mb-2">
+                      <span class="badge bg-primary">
+                        <i class="bi bi-tag"></i> {{ noticia.categoria|title }}
+                      </span>
+                      <span class="text-muted">• {{ noticia.fecha_publicacion }} • {{ noticia.tiempo_lectura }} min</span>
+                    </p>
+                    <p class="card-text">{{ noticia.descripcion_corta|truncatewords:25 }}</p>
+                  </div>
+        
+                  <div class="mt-3">
+                    <a href="{% url 'noticia_detalle' noticia.slug %}" class="btn btn-warning w-100 mb-2">📰 Leer más</a>
+        
+                    {% if user.is_authenticated %}
+                      <form method="post" action="{% url 'toggle_favorito_noticia' noticia.id %}">
+                        {% csrf_token %}
+                        {% if noticia in favoritas %}
+                          <button type="submit" class="btn btn-danger w-100">❤️ Quitar de Favoritos</button>
+                        {% else %}
+                          <button type="submit" class="btn btn-outline-danger w-100">🤍 Agregar a Favoritos</button>
+                        {% endif %}
+                      </form>
+                    {% else %}
+                      <p class="text-muted text-center mt-2 small">
+                        🔐 Inicia sesión para guardar en favoritos
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-center">No se encontraron noticias con ese criterio.</p>
+          {% endfor %}
+        </div>
+        

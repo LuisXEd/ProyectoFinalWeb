@@ -1,0 +1,73 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body class="{% if request.session.modo_oscuro %}dark-mode{% endif %}">
+  <div class="d-flex flex-column min-vh-100">
+    <header class="header-custom text-center py-4">
+      <h1>🍽️ Recetas Inspiradas en el Cine 🎬</h1>
+      <p class="lead text-secondary-emphasis">Descubre deliciosas recetas inspiradas en tus películas favoritas.</p>
+    </header>
+
+    <main class="container my-5 flex-grow-1">
+
+      <!-- 🔍 Buscador AJAX -->
+      <div class="mb-4">
+        <input type="text"
+               class="form-control form-control-lg buscador-ajax"
+               placeholder="🔍 Buscar recetas por título o película..."
+               data-url="/comida/"
+               data-target="contenedorRecetas">
+      </div>
+
+      <!-- 🧑‍🍳 Sección dinámica de recetas -->
+      <div id="contenedorRecetas">
+        {% include 'partials/lista_recetas.html' %}
+      </div>
+
+      <!-- 🌍 Recomendaciones (estático, no cambia con AJAX) -->
+      <hr class="my-5">
+      <h2 class="text-center mb-4">🍽️ Otras Recomendaciones de Comida 🌍</h2>
+      <div class="row">
+        {% if recomendaciones %}
+          {% for rec in recomendaciones %}
+            <div class="col-md-3 mb-4">
+              <div class="card h-100 text-center shadow">
+                <img src="{{ rec.imagen.url }}" class="card-img-top img-fluid" style="height: 500px; object-fit: cover; border-radius: 10px;" alt="{{ rec.titulo }}">
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">{{ rec.titulo }}</h5>
+                  <p class="text-muted">{{ rec.descripcion }}</p>
+                  <button class="btn btn-primary mt-auto" onclick="mostrarReceta('{{ rec.titulo }}', '{{ rec.imagen.url }}', '{{ rec.descripcion }}', `{{ rec.ingredientes }}`, `{{ rec.preparacion }}`)">Ver Más</button>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-center text-secondary-emphasis">No hay recomendaciones por ahora.</p>
+        {% endif %}
+      </div>
+    </main>
+
+    {% include 'footer.html' %}
+  </div>
+
+  <!-- Modal para mostrar detalles de receta -->
+  <div class="modal fade" id="modalReceta" tabindex="-1" aria-labelledby="modalRecetaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalRecetaLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="recetaImagen" src="" class="img-fluid mb-3" style="border-radius: 10px;" alt="">
+          <p id="peliculaReferencia" class="text-warning fw-bold"></p>
+          <h4 class="text-warning">🥣 Ingredientes</h4>
+          <ul id="recetaIngredientes" class="list-unstyled"></ul>
+          <h4 class="text-warning">👨‍🍳 Preparación</h4>
+          <p id="recetaPreparacion" class="fw-light"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>

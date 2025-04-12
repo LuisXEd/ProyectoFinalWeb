@@ -1,0 +1,22 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body>
+    <div class="d-flex flex-column min-vh-100">
+        <!-- Contenido principal -->
+        <main class="container flex-grow-1 py-5">
+            <h2 class="text-center mb-4">Contáctanos</h2>
+            {% if mensaje_exito %}
+                <div class="alert alert-success">✅ Tu mensaje ha sido enviado con éxito.</div>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary mt-3">Enviar Mensaje</button>
+            </form>
+        </main>
+
+        <!-- Footer siempre al fondo -->
+        {% include 'footer.html' %}
+    </div>
+</body>

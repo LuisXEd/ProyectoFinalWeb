@@ -1,0 +1,21 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body>
+    <div class="container py-5" style="min-height: 80vh;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-lg border-0">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">{{ politica.titulo }}</h2>
+                        <div class="card-text" style="white-space: pre-line;">
+                            {{ politica.contenido |safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+</body>

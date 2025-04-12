@@ -1,0 +1,51 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body class="{% if request.session.modo_oscuro %}dark-mode{% endif %}">
+  <div class="d-flex flex-column min-vh-100">
+    <main class="container flex-grow-1 py-5">
+
+      <!-- Carrusel de noticias destacadas -->
+      {% if noticias_destacadas %}
+      <div id="carouselDestacadas" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% for noticia in noticias_destacadas %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ noticia.imagen.url }}" class="d-block w-100 rounded" alt="Imagen de {{ noticia.titulo }}">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+              <h5>{{ noticia.titulo }}</h5>
+              <p>{{ noticia.descripcion_corta|truncatewords:15 }}</p>
+              <a href="{% url 'noticia_detalle' noticia.slug %}" class="btn btn-outline-light btn-sm">Leer más</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselDestacadas" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselDestacadas" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+      {% endif %}
+
+      <!-- Búsqueda en tiempo real con AJAX -->
+      <div class="mb-4">
+        <input type="text"
+               class="form-control form-control-lg buscador-ajax"
+               placeholder="🔍 Buscar noticias por título o categoría..."
+               data-url="/noticias/"
+               data-target="contenedorNoticias">
+      </div>
+
+      <h2 class="text-center mb-4">Últimas Noticias</h2>
+
+      <div id="contenedorNoticias">
+        {% include 'partials/lista_noticias.html' %}
+      </div>
+
+    </main>
+
+    {% include 'footer.html' %}
+  </div>
+</body>

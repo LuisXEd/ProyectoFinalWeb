@@ -1,0 +1,31 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body class="{% if request.session.modo_oscuro %}dark-mode{% endif %}">
+  <div class="d-flex flex-column min-vh-100">
+    <header class="text-center py-5" style="background-color: #ffc107;">
+      <h1>🎬 Crea el Ambiente Perfecto para tus Películas</h1>
+      <p class="lead">Transforma tu espacio con ideas creativas para disfrutar al máximo cada película.</p>
+    </header>
+
+    <main class="container my-5 flex-grow-1">
+      <!-- 🔍 Buscador AJAX -->
+      <div class="mb-4">
+        <input type="text"
+               class="form-control form-control-lg buscador-ajax"
+               placeholder="🔍 Buscar ideas por título o categoría..."
+               data-url="/decoracion/"
+               data-target="contenedorDecoracion">
+      </div>
+
+      <h2 class="text-center mb-4">💡 Ideas de Decoración</h2>
+
+      <!-- 🎨 Contenedor dinámico -->
+      <div id="contenedorDecoracion">
+        {% include 'partials/lista_decoracion.html' %}
+      </div>
+    </main>
+
+    {% include 'footer.html' %}
+  </div>
+</body>

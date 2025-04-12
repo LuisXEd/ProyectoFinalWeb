@@ -1,0 +1,62 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body>
+  <div class="d-flex flex-column min-vh-100">
+    <header class="header-custom text-center py-4">
+      <h1>🍿Películas Perfectas para Acompañar tu Comida🎬</h1>
+      <p class="lead text-secondary-emphasis">Explora una amplia selección de películas de todos los géneros.</p>
+    </header>
+
+    <main class="container my-5 flex-grow-1">
+
+      <!-- 🔍 Buscador AJAX -->
+      <div class="mb-4">
+        <input type="text"
+               class="form-control form-control-lg buscador-ajax"
+               placeholder="🔍 Buscar películas por título o categoría..."
+               data-url="/peliculas/"
+               data-target="contenedorPeliculas">
+      </div>
+
+      <!-- 🎞️ Listado dinámico -->
+      <div id="contenedorPeliculas">
+        {% if peliculas %}
+          <div class="row">
+            {% for pelicula in peliculas %}
+              <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow">
+                  <img src="{{ pelicula.imagen.url }}" class="card-img-top" alt="{{ pelicula.titulo }}">
+                  <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ pelicula.titulo }}</h5>
+                    <p class="card-text flex-grow-1">{{ pelicula.descripcion }}</p>
+                    <a href="{{ pelicula.trailer_url }}" target="_blank" class="btn btn-warning mb-2">🎬 Ver Tráiler</a>
+
+                    {% if user.is_authenticated %}
+                      <form method="post" action="{% url 'toggle_favorito_pelicula' pelicula.id %}">
+                        {% csrf_token %}
+                        {% if pelicula in favoritos %}
+                          <button type="submit" class="btn btn-danger w-100">Quitar de Favoritos ❤️</button>
+                        {% else %}
+                          <button type="submit" class="btn btn-outline-danger w-100">Agregar a Favoritos 🤍</button>
+                        {% endif %}
+                      </form>
+                    {% else %}
+                      <p class="text-muted text-center mt-2">Inicia sesión para guardar en favoritos</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-center text-muted">No hay películas disponibles por ahora.</p>
+        {% endif %}
+      </div>
+
+    </main>
+
+    {% include 'footer.html' %}
+  </div>
+</body>
+</html>

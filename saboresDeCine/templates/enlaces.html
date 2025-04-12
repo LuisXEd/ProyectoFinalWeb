@@ -1,0 +1,52 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body>
+    <div class="content-wrapper d-flex flex-column justify-content-between" style="min-height: 100vh;">
+        <div class="container py-5">
+
+            <!-- Encabezado -->
+            <div class="text-center mb-5">
+                <h2 class="fw-bold mb-1">🎥 Enlaces de Interés 🎬</h2>
+                <p class="lead">Explora videos y ubicaciones relacionadas con el mundo del cine y la gastronomía.</p>
+            </div>
+
+            <!-- Videos y Mapas -->
+            <div class="row justify-content-center">
+                {% for enlace in enlaces %}
+                    {% if enlace.tipo == 'video' or enlace.tipo == 'mapa' %}
+                        <div class="col-md-6 col-lg-5 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="ratio ratio-16x9">
+                                    <iframe src="{{ enlace.embed_url }}" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">{{ enlace.titulo }}</h5>
+                                    <p class="card-text">{{ enlace.descripcion }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Botones -->
+            {% if enlaces|length > 0 %}
+                <div class="text-center mt-5">
+                    <h4>🌍 Explora en Google Earth</h4>
+                    <p>Descubre lugares de ventas de snacks y otros sitios de interés en República Dominicana.</p>
+                    {% for enlace in enlaces %}
+                        {% if enlace.tipo == 'boton' %}
+                            <a href="{{ enlace.url_externa }}" target="_blank" class="btn btn-success btn-lg m-2">
+                                {{ enlace.texto_boton }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+
+        {% include 'footer.html' %}
+    </div>
+</body>

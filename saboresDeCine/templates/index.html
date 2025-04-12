@@ -1,0 +1,227 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body class="{% if request.session.modo_oscuro %}dark-mode{% endif %}">
+  <div class="d-flex flex-column min-vh-100">
+
+    <!-- HERO DIFUMINADO -->
+    <style>
+      .hero {
+        position: relative;
+        height: 100vh;
+        background: url('{{ config.imagen_hero.url }}') center center / cover no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+      }
+
+      .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+      }
+
+      .hero-content p {
+        font-size: 1.3rem;
+        margin-top: 10px;
+      }
+
+      .scroll-btn {
+        margin-top: 30px;
+        padding: 12px 30px;
+        font-size: 1rem;
+        background-color: #ffc107;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .scroll-btn:hover {
+        background-color: #e0a800;
+      }
+    </style>
+
+    <div class="hero">
+      <div class="hero-content">
+        <h1>{{ config.titulo_hero }}</h1>
+        <p>{{ config.descripcion_hero }}</p>
+        <button class="scroll-btn" onclick="document.getElementById('categorias').scrollIntoView({ behavior: 'smooth' });">
+          Explorar Categorías ⬇️
+        </button>
+      </div>
+    </div>
+
+    <!-- CATEGORÍAS -->
+    <section class="container my-5 text-center" id="categorias">
+      <h2>🎬 Explora nuestras categorías</h2>
+      <div class="category-container mt-4 d-flex flex-wrap justify-content-center">
+        <div class="category-card mx-3 mb-4">
+          <a href="/peliculas" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/cine1.jpg' %}" alt="Cine en casa">
+            <div class="card-body">
+              <h3>Cine</h3>
+              <p>Descubre las mejores películas para una noche especial.</p>
+            </div>
+          </a>
+        </div>
+        <div class="category-card mx-3 mb-4">
+          <a href="/comida" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/comida.jpg' %}" alt="Comida temática">
+            <div class="card-body">
+              <h3>Comida</h3>
+              <p>Recetas y snacks ideales para disfrutar con cada película.</p>
+            </div>
+          </a>
+        </div>
+        <div class="category-card mx-3 mb-4">
+          <a href="/decoracion" style="text-decoration: none; color: inherit;">
+            <img src="{% static 'images/decoracion.jpg' %}" alt="Decoración para cine">
+            <div class="card-body">
+              <h3>Decoración</h3>
+              <p>Ambienta tu espacio para que cada película sea una experiencia única.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PELÍCULAS DESTACADAS -->
+    {% if peliculas_destacadas %}
+    <section class="container my-5">
+      <h2 class="text-center mb-4">🎥 Películas Destacadas</h2>
+      <div class="row">
+        {% for pelicula in peliculas_destacadas %}
+        <div class="col-md-3 mb-4">
+          <div class="card h-100 shadow">
+            <img src="{{ pelicula.imagen.url }}" class="card-img-top" alt="{{ pelicula.titulo }}">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ pelicula.titulo }}</h5>
+              <p class="card-text flex-grow-1">{{ pelicula.descripcion|truncatewords:15 }}</p>
+              <a href="{{ pelicula.trailer_url }}" target="_blank" class="btn btn-warning mt-auto">🎬 Ver Tráiler</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- RECETAS DESTACADAS -->
+    {% if recetas_destacadas %}
+    <section class="container my-5">
+      <h2 class="text-center mb-4">🍽️ Recetas Populares</h2>
+      <div class="row">
+        {% for receta in recetas_destacadas %}
+        <div class="col-md-3 mb-4">
+          <div class="card h-100 shadow">
+            <img src="{{ receta.imagen.url }}" class="card-img-top" style="height: 250px; object-fit: cover;" alt="{{ receta.titulo }}">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ receta.titulo }}</h5>
+              <p class="card-text flex-grow-1">🎬 De la película: <strong>{{ receta.pelicula }}</strong></p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- DECORACIÓN DESTACADA -->
+    {% if ideas_destacadas %}
+    <section class="container my-5">
+      <h2 class="text-center mb-4">🛋️ Ideas de Decoración</h2>
+      <div class="row">
+        {% for idea in ideas_destacadas %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 shadow border-warning">
+            <img src="{{ idea.imagen_destacada.url }}" class="card-img-top" alt="{{ idea.titulo }}">
+            <div class="card-body text-center d-flex flex-column">
+              <h5 class="card-title">✨ {{ idea.titulo }}</h5>
+              <p class="card-text flex-grow-1">{{ idea.descripcion_corta }}</p>
+              <a href="{% url 'decoracion_detalle' idea.slug %}" class="btn btn-warning mt-auto">Ver más</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- FRASE CINEMATOGRÁFICA -->
+    {% if frases %}
+    <div class="container my-5">
+      <div id="fraseCarousel" class="carousel slide bg-dark text-white rounded shadow-sm py-4" data-bs-ride="carousel" data-bs-interval="4000">
+        <div class="carousel-inner">
+          {% for frase in frases %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+              <blockquote class="blockquote text-center px-4">
+                <p class="mb-2 fs-4 fst-italic">"{{ frase.frase }}"</p>
+                <footer class="blockquote-footer mt-2 text-light">— {{ frase.autor }}</footer>
+              </blockquote>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+
+
+
+    <!-- SOBRE PROYECTO-->
+    {% if config %}
+    <section class="container my-5">
+    <div class="row align-items-center bg-dark text-white rounded shadow p-4" data-aos="fade-up" data-aos-duration="1000">
+        <div class="col-md-6 mb-4 mb-md-0" data-aos="zoom-in" data-aos-delay="200">
+        <div class="position-relative overflow-hidden rounded">
+            <img src="{{ config.imagen_sobre.url }}" class="img-fluid" alt="Sobre el Proyecto" style="object-fit: cover; width: 100%; max-height: 350px;">
+            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-25 rounded"></div>
+        </div>
+        </div>
+        <div class="col-md-6 px-4" data-aos="fade-left" data-aos-delay="400">
+        <h3 class="mb-3 display-6 fw-bold text-warning">{{ config.titulo_sobre }}</h3>
+        <p class="lead">{{ config.contenido_sobre }}</p>
+        </div>
+    </div>
+    </section>
+    {% endif %}
+
+
+    <!-- CTA FINAL -->
+    {% if config %}
+    <section class="text-center my-5 py-5" style="background-color: #ffc107;">
+      <h3 class="mb-3">{{ config.titulo_cta }}</h3>
+      <p class="mb-4">{{ config.descripcion_cta }}</p>
+      <a href="{{ config.enlace_boton_cta }}" class="btn btn-dark">{{ config.texto_boton_cta }}</a>
+    </section>
+    {% endif %}
+
+    <!-- AOS Library -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        AOS.init();
+    });
+    </script>
+
+
+    {% include 'footer.html' %}
+  </div>
+</body>

@@ -1,0 +1,274 @@
+/* ---- ESTILOS GENERALES ---- */
+body {
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ---- NAVBAR ---- */
+.navbar-dark .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: white;
+    font-size: 1.1rem;
+    margin: 0 10px;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #FFC107;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* ---- ESTILO PARA LOGO NAVBAR ---- */
+.navbar-brand img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+}
+
+/* ---- HEADER ---- */
+.header-custom {
+    background-color: #FFC107;
+    color: #222;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.header-custom h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.header-custom p {
+    font-size: 1.3rem;
+    margin-top: 10px;
+}
+
+/* ---- FOOTER ---- */
+footer {
+    background-color: #222;
+    color: white;
+    padding: 15px 0;
+}
+
+/* ---- REDES SOCIALES ---- */
+.social-icons a {
+    font-size: 1.5rem;
+    color: #ffffff;
+    transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.social-icons a:hover {
+    color: #FFC107;
+    transform: scale(1.2);
+}
+
+/* ---- EFECTOS HOVER ---- */
+.btn {
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* ---- TARJETAS (CARD) ---- */
+.card {
+    transition: all 0.3s ease-in-out;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: white;
+    color: black;
+}
+
+.card:hover {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+    border-color: #333;
+    transform: scale(1.03);
+}
+
+.card h5 {
+    font-weight: bold;
+}
+
+/* ---- EFECTO HOVER PARA IMÁGENES ---- */
+.card img {
+    transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+
+.card:hover img {
+    transform: scale(1.05);
+    filter: brightness(90%);
+}
+
+/* ---- MODO OSCURO ---- */
+.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+/* ---- TARJETAS EN MODO OSCURO ---- */
+.dark-mode .card {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+    border: 2px solid #FFC107 !important;
+}
+
+.dark-mode .card:hover {
+    border-color: #ff8c00 !important;
+    box-shadow: 0px 10px 20px rgba(255, 140, 0, 0.5);
+}
+
+/* ---- BOTONES EN MODO OSCURO ---- */
+.dark-mode .btn-primary {
+    background-color: #FFC107 !important;
+    border-color: #FFC107 !important;
+    color: #222 !important;
+}
+
+.dark-mode .btn-primary:hover {
+    background-color: #e0a800 !important;
+    border-color: #d39e00 !important;
+}
+
+/* ---- IMÁGENES EN MODO OSCURO ---- */
+.dark-mode .card img {
+    filter: brightness(90%);
+}
+
+/* ---- MODAL ---- */
+.modal-content {
+    background-color: white;
+    color: black;
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid #ddd;
+}
+
+/* ---- MODAL EN MODO OSCURO ---- */
+.dark-mode .modal-content {
+    background-color: #1e1e1e !important;
+    color: white !important;
+    border: 2px solid #FFC107 !important;
+}
+
+.dark-mode .modal-content:hover {
+    border-color: #ff8c00;
+}
+
+/* ---- TARJETAS DE CATEGORÍA ---- */
+.category-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: stretch; /* 🔹 Asegurar que todas tengan el mismo tamaño */
+}
+
+.category-card {
+    flex: 1;
+    max-width: 350px;
+    min-width: 300px;
+    height: 600px; /* 🔹 Se asegura la misma altura */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: white;
+    color: black;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    border: 2px solid #ddd;
+}
+
+/* ---- IMÁGENES EN TARJETAS ---- */
+.category-card img {
+    width: 100%;
+    height: 450px; /* 🔹 Misma altura para todas las imágenes */
+    object-fit: cover;
+}
+
+/* ---- CONTENIDO DE TARJETAS ---- */
+.category-card .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+/* ---- EFECTO HOVER PARA TARJETAS ---- */
+.category-card:hover {
+    background-color: #FFC107;
+    color: black;
+    transform: scale(1.05);
+    border-color: #333;
+    box-shadow: 0px 10px 20px rgba(255, 193, 7, 0.3);
+}
+
+.category-card:hover h3,
+.category-card:hover p {
+    color: black;
+}
+
+/* ---- MODO OSCURO PARA TARJETAS ---- */
+.dark-mode .category-card {
+    background-color: black;
+    border: 2px solid #FFC107;
+    color: white;
+}
+
+.dark-mode .category-card h3 {
+    color: #FFC107;
+}
+
+/* ---- EFECTO HOVER EN TARJETAS EN MODO OSCURO ---- */
+.dark-mode .category-card:hover {
+    background-color: #FFC107;
+    color: black;
+    border-color: #ff8c00;
+    box-shadow: 0px 10px 20px rgba(255, 140, 0, 0.5);
+}
+
+.dark-mode .category-card:hover h3,
+.dark-mode .category-card:hover p {
+    color: black;
+}
+
+/* ---- MEJORAR VISIBILIDAD DEL TEXTO EN TARJETAS CLARAS Y OSCURAS ---- */
+.card-body .text-muted {
+    color: #817070 !important;
+}
+
+.dark-mode .card-body .text-muted {
+    color: #fff !important;
+}
+
+/* ---- FORZAR QUE TODAS LAS TARJETAS SEAN DEL MISMO TAMAÑO ---- */
+.news-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* ---- IMÁGENES EN TARJETAS DE NOTICIAS ---- */
+.news-card img {
+    width: 100%;
+    height: 500px; /* 🔹 Misma altura para todas */
+    object-fit: cover;
+}
+
+
+
+/* ---- AGREGADO EN LAS FASES FINALES ---- */
+

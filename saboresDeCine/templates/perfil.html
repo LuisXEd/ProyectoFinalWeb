@@ -1,0 +1,42 @@
+{% load static %}
+{% include 'navBar.html' %}
+
+<body class="{% if request.session.modo_oscuro %}dark-mode{% endif %}">
+  <div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="p-4 rounded-4 shadow text-center" style="width: 100%; max-width: 500px; background-color: rgba(255,255,255,0.03);">
+
+      <h2 class="text-white mb-4">👤 Editar Perfil</h2>
+
+      <!-- ✅ Mostrar solo mensajes con etiqueta 'perfil' -->
+      {% if messages %}
+        {% for message in messages %}
+          {% if 'perfil' in message.tags %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show text-start" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      <form method="post" class="text-start">
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label text-white fw-bold">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <div class="text-danger small">{{ field.errors.0 }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-warning w-100 fw-bold">Guardar cambios</button>
+      </form>
+
+      <a href="{% url 'logout' %}" class="btn btn-danger mt-3 w-100">Cerrar sesión</a>
+    </div>
+  </div>
+</body>
+
+{% include 'footer.html' %}
+<script src="{% static 'js/script.js' %}"></script>
