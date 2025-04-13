@@ -105,3 +105,24 @@ function mostrarReceta(titulo, imagen, pelicula, ingredientes, preparacion) {
   const modal = new bootstrap.Modal(document.getElementById("modalReceta"));
   modal.show();
 }
+
+// --- CERRAR SESIÓN ---
+// Esta sección es para el botón de cerrar sesión y el modal de confirmación
+document.addEventListener("DOMContentLoaded", function () {
+  const cerrarSesionBtn = document.getElementById("cerrarSesionBtn");
+  const confirmarCerrarSesion = document.getElementById("confirmarCerrarSesion");
+
+  if (cerrarSesionBtn) {
+    cerrarSesionBtn.addEventListener("click", function () {
+      const modal = new bootstrap.Modal(document.getElementById("modalCerrarSesion"));
+      modal.show();
+    });
+  }
+
+  if (confirmarCerrarSesion) {
+    confirmarCerrarSesion.addEventListener("click", function () {
+      // Aquí puedes redirigir al usuario o realizar la acción de cierre de sesión
+      window.location.href = "/logout"; // Cambia "/logout" por la URL de tu endpoint de cierre de sesión
+    });
+  }
+});
